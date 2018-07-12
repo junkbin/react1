@@ -1,40 +1,46 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Button} from 'reactstrap';
-import App from './App';
-import 'bootstrap/dist/css/bootstrap.css';
 
-let firstName = "Kharghar";
-const myelement = (<h1>ReactApp Element @{firstName}</h1>);
-const elem1 = (
-    <div>
-        <h1>ReactApp Element @{firstName}</h1>
-        <App title="CBD"/>
-        <App title="SEAWOOD"/>
-        <App title="NERUL"/>
-    </div>
-);
+class MyApp extends React.Component {
+    constructor(){
+        super();
 
-function dynamicContent() {
-    let ctime = new Date() + "";
-    const delem = (
+        this.state = {
+            "dynamic" : "I am dynamic text"
+        };
+    }
+
+    dynamicDataChange(e){
+        this.setState({"dynamic": e.target.value});
+    }
+
+    render(){
+        return (
+            <div>
+                <h1>Hello World</h1>
+                <h2>{this.props.title}</h2>
+                <h2>{this.state.dynamic}</h2>
+                <input value={this.state.dynamic} onChange={this.dynamicDataChange.bind(this)} />
+
+                <Widget dynamicDataChange={this.dynamicDataChange.bind(this)} />
+            </div>
+        );
+    }
+}
+
+let Widget = (props) => {
+    return (
         <div>
-            {ctime}
+            <h3>I am widget</h3>
+            <input  onChange={props.dynamicDataChange} />
         </div>
     );
-    ReactDOM.render(delem, document.getElementById('root2'));
 };
 
-
-ReactDOM.render(elem1, document.getElementById('root'));
-ReactDOM.render(myelement, document.getElementById('root1'));
-
-setInterval(dynamicContent, 1000);
-
-const BootElem = (props) => {
-    return (
-      <Button color="danger">Danger!</Button>
-    );
+MyApp.defaultProps = {
+    "title" : "Hie I am title",
+    "desc" : "Hie I am decription"
 };
-const b1 = <Button color="danger">Danger!</Button>;
-ReactDOM.render(<BootElem />, document.getElementById('boot1'));
+
+ReactDOM.render(<MyApp />, document.getElementById("root"));
